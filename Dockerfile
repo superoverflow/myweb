@@ -2,6 +2,7 @@
 # Docker build to run django
 #
 ################################
+FROM python:3.6-alpine
 
 COPY . /app
 WORKDIR /app
