@@ -4,7 +4,7 @@
 ################################
 FROM python:3.6-alpine
 ENV APP_PORT=11080
-RUN apt-get update && apt-get install ffmpeg
+RUN apk update && apk add ffmpeg
 
 COPY . /myweb
 WORKDIR /myweb
