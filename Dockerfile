@@ -2,9 +2,8 @@
 # Docker build to run django
 #
 ################################
-ARG PORT=11080
-
 FROM python:3.6-alpine
+ENV APP_PORT=11080
 
 COPY . /app
 WORKDIR /app
