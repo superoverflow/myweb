@@ -2,9 +2,8 @@
 # Docker build to run django
 #
 ################################
-ENV APP_PORT=11080
-
 FROM python:3.6-alpine
+ENV APP_PORT=11080
 RUN apt-get update && apt-get install ffmpeg
 
 COPY . /myweb
