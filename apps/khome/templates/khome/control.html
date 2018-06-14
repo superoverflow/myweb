@@ -1,0 +1,51 @@
+{% extends 'khome/base.html' %}
+
+{% block body %}
+    <div id="container-fluid">
+        <div class="row">
+            <!-- controls -->
+            <div class="col-md-4">
+                <button id="btn_vocal" type="button" class="btn btn-danger btn-lg btn-block">
+                    <i class="fas fa-microphone-alt"></i></button></div>
+            <div class="col-md-4">
+                <button id="btn_play" type="button" class="btn btn-warning btn-lg btn-block">
+                    <i class="fas fa-play"></i></button></div>
+            <div class="col-md-4">
+                <button id="btn_skip" type="button" class="btn btn-success btn-lg btn-block">
+                    <i class="fas fa-forward"></i></button></div>
+
+            <!-- search bar -->
+            <div class="col-md-4 pull-right">
+            <form class="navbar-form" role="search" id="srch-form">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            </form>
+            </div>
+
+            <!-- playlist -->
+            <ul>
+            {% for item in playlist %}
+                <li> {{ item.title }} </li>
+            {% empty %}
+                <p> No music in the playlist yet</p>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    $("#srch-form").on("submit",function(e) {
+        e.preventDefault(); // cancel submission
+        search_term = $("#srch-term").val();
+        console.log("search_term: "+ search_term);
+        url = '{% url 'search' query='placeholder' %}';
+        window.location.replace(url.replace("placeholder",search_term));
+    });
+
+
+{% endblock %}
