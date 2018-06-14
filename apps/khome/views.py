@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from collections import deque
 
 # Create your views here.
@@ -16,3 +16,13 @@ def control(request):
 
 def search(request, query):
     return HttpResponse()
+
+def toggle(request, param):
+    if param not in state.keys():
+        return JsonResponse({"Error":1})
+
+    state[param]  = not(state[param])
+    return JsonResponse(state)
+
+def check_state(reqeust):
+    return JsonResponse(state)
