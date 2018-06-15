@@ -19,10 +19,19 @@ def search(request, query):
 
 def toggle(request, param):
     if param not in state.keys():
-        return JsonResponse({"Error":1})
+        return JsonResponse({"Error":"no such key [{}]".format(param)})
 
     state[param]  = not(state[param])
     return JsonResponse(state)
 
 def check_state(reqeust):
     return JsonResponse(state)
+
+
+def show_playlist(request):
+    return JsonResponse({'playlist':list(playlist)})
+
+def pop_playlist(request):
+    if len(playlist) > 0:
+        playlist.popleft()
+    return JsonResponse({'playlist': list(playlist)})
