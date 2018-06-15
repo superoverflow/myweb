@@ -1,0 +1,101 @@
+{% extends 'khome/base.html' %}
+{% load static %}
+
+{% block body %}
+    <!--
+        chrome had disabled autoplay by default, need to set below
+        chrome://flags/#autoplay-policy
+    -->
+    <video id="video_player" width="90%" height="50%" controls autobuffer muted>
+        <source src="{% get_media_prefix %}{{video_id}}.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <audio id="vocal_player" controls autobuffer muted>
+        <source src="{% get_media_prefix %}{{video_id}}.mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="music_player" controls autobuffer>
+        <source src="{% get_media_prefix %}{{video_id}}-music.mp3" type="audio/mp3">
+    </audio>
+
+{% endblock %}
+
+{% block script %}
+  function pop_playlist() {
+      url = '{% url 'pop' %}';
+      $.ajax({
+          url: url,
+      }).done(function(e) {
+          console.log(e);
+      });
+  }
+
+  function play_media() {
+      $('#video_player').get(0).play();
+      $('#music_player').get(0).play();
+      $('#vocal_player').get(0).play();
+  }
+
+  function pause_media() {
+      $('#video_player').get(0).pause();
+      $('#music_player').get(0).pause();
+      $('#vocal_player').get(0).pause();
+  }
+
+  function check_media_ready() {
+      var video = $('#video_player').get(0).readyState == 4;
+      var music = $('#music_player').get(0).readyState == 4;
+      var vocal = $('#vocal_player').get(0).readyState == 4;
+
+      console.log("video: " + video + " music: " + music + " vocal: " + vocal );
+
+      if (video && music && vocal) {
+          console.log("playing media");
+          play_media();
+          pop_playlist();
+      }
+  }
+
+  function poll_state() {
+      setTimeout(function() {
+          $.ajax({
+              url: '{% url 'state' %}',
+              success: function(data) {
+                  console.log('vocal:' + data.vocal);
+                  $('#vocal_player').prop('muted', data.vocal);
+              },
+              dataType: "json",
+              complete: poll_state()
+           });
+       }, 500);
+  }
+
+  $(document).ready(function(){
+
+    $('#video_player').on('ended',function(){
+        console.log('Video has ended!');
+        url = '{% url 'index' %}';
+        window.location.replace(url);
+    });
+
+    $('#video_player').on('canplaythrough',function(){
+        console.log('video fully loaded!');
+        check_media_ready();
+    });
+
+    $('#music_player').on('canplaythrough',function(){
+        console.log('music fully loaded!');
+        check_media_ready();
+    });
+
+    $('#vocal_player').on('canplaythrough',function(){
+        console.log('Vocal fully loaded!');
+        check_media_ready();
+    });
+
+    poll_state();
+  });
+
+
+{% endblock %}

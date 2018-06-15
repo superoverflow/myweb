@@ -1,0 +1,41 @@
+{% extends 'khome/base.html' %}
+
+{% block body %}
+    <ul>
+    {% for item in playlist %}
+        <li> {{ item.title }} </li>
+    {% empty %}
+        go to {{ control_page }} to add some songs!
+    {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block script %}
+
+    function go_to_play(id) {
+        url_tmp = "{% url 'play' video_id='_video_id_' %}";
+        link = url_tmp.replace('_video_id_', id);
+        console.log("go to link: " + link);
+        window.location.replace( link );
+    }
+
+    (function poll() {
+        setTimeout(function() {
+            $.ajax({
+                url: '{% url 'playlist' %}',
+                success: function(data) {
+                    if (data.playlist.length > 0) {
+                        id = data.playlist[0][0];
+                        go_to_play(id);
+                    } else {
+                        console.log("waiting for playlist");
+                    }
+                },
+                dataType: "json",
+                complete: poll
+            });
+        }, 500);
+    })();
+
+
+{% endblock %}
