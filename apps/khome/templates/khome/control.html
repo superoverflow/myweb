@@ -48,4 +48,13 @@
     });
 
 
+    $('#btn_vocal').on("click", function(e) {
+            $.ajax({
+                url: "{% url 'toggle' param='vocal' %}",
+                complete: function(data) {
+                     console.log(data);
+                }
+            });
+    });
+
 {% endblock %}
