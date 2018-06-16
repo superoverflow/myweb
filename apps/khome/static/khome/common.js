@@ -4,6 +4,7 @@ function Request() {
   this.pollTimer = null;
   this.interval = 1000;
   this.url = './request.php';
+  this.func = response => console.log(response)
 }
 
 Request.prototype.disablePoll = function () {
@@ -13,6 +14,6 @@ Request.prototype.disablePoll = function () {
 
 Request.prototype.activatePoll = function () {
   this.pollTimer = setInterval(() => {
-    $.getJSON(this.url).then(response => console.log(response))
+    $.getJSON(this.url).then(this.func)
   }, this.interval);
 };
