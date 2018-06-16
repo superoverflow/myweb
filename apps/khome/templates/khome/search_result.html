@@ -13,12 +13,11 @@
 {% block script %}
 
     function clickhandler(id, title) {
-        var xhr = new XMLHttpRequest();
+
         url = "{% url 'download' video_id='_id_' video_title='_title_' %}";
         link = url.replace( '_id_', id).replace('_title_', title);
-        xhr.open('GET', link );
-        xhr.send();
-        console.log('adding: ' + link);
+        $.get(link);
+
         bootbox.alert({
             message: "[" + title + "] added to playlist",
             callback: function () {
