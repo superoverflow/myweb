@@ -19,23 +19,17 @@
         window.location.replace( link );
     }
 
-    (function poll() {
-        setTimeout(function() {
-            $.ajax({
-                url: '{% url 'playlist' %}',
-                success: function(data) {
-                    if (data.playlist.length > 0) {
-                        id = data.playlist[0][0];
-                        go_to_play(id);
-                    } else {
-                        console.log("waiting for playlist");
-                    }
-                },
-                dataType: "json",
-                complete: poll
-            });
-        }, 500);
-    })();
+    function poll_callback(data) {
+        if (data.playlist.length > 0) {
+             id = data.playlist[0][0];
+             go_to_play(id);
+        } else {
+             console.log("waiting for playlist");
+        }
+    }
 
-
+    var poller = new Poll();
+    poller.url = '{% url 'playlist' %}';
+    poller.func = poll_callback;
+    poller.activatePoll();
 {% endblock %}
