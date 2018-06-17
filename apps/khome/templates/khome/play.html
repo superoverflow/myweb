@@ -64,8 +64,8 @@
        if (data.skip == true) {
            $.get( "{% url 'toggle' param='skip' %}", function(data) {
                 console.log(data);
+                skip_media();
            });
-           skip_media();
        }
 
        console.log('play:' + data.play);
