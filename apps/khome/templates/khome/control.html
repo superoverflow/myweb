@@ -56,12 +56,21 @@
 
 
     $('#btn_vocal').on("click", function(e) {
-            $.ajax({
-                url: "{% url 'toggle' param='vocal' %}",
-                complete: function(data) {
-                     console.log(data);
-                }
-            });
+        $.get( "{% url 'toggle' param='vocal' %}", function(data) {
+                 console.log(data);
+        });
+    });
+
+    $('#btn_play').on("click", function(e) {
+        $.get( "{% url 'toggle' param='play' %}", function(data) {
+                 console.log(data);
+        });
+    });
+
+    $('#btn_skip').on("click", function(e) {
+        $.get( "{% url 'toggle' param='skip' %}", function(data) {
+                 console.log(data);
+        });
     });
 
 {% endblock %}
