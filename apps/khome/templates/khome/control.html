@@ -26,19 +26,22 @@
             </form>
             </div>
 
-            <!-- playlist -->
-            <ul class="list-group">
-            {% for item in pending %}
-                <li class="pending list-group-item"> {{ item }} [DOWNLOADING]</li>
-            {% endfor %}
+            <div class="row">
+                <div class="col-md-12">
+                <!-- playlist -->
+                    <ul class="list-group">
+                    {% for item in pending %}
+                        <li class="pending list-group-item disabled"> {{ item }} [DOWNLOADING]</li>
+                    {% endfor %}
 
-            {% for item in playlist %}
-                <li class="list-group-item"> {{ item.title }} </li>
-            {% empty %}
-                <p> No music in the playlist yet</p>
-            {% endfor %}
-            </ul>
-
+                    {% for item in playlist %}
+                        <li class="list-group-item"> {{ item.title }} </li>
+                    {% empty %}
+                        <li class="list-group-item"> No music in the playlist yet</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
 
         </div>
     </div>
