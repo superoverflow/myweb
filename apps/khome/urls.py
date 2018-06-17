@@ -10,10 +10,9 @@ urlpatterns = [
     path('search/<query>', views.search, name='search'),
     path('download/<video_id>/<video_title>', views.download, name='download'),
 
-
     path('state', views.check_state, name='state'),
     path('toggle/<param>', views.toggle, name='toggle'),
     path('playlist', views.show_playlist, name='playlist'),
+    path('pending', views.show_pending, name='pending'),
     path('popPlaylist', views.pop_playlist, name='pop'),
-
 ]

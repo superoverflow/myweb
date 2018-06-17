@@ -7,6 +7,7 @@ from .utils import search_youtube,download_youtube, remove_vocal, Result
 
 # Create your views here.
 playlist = deque()
+pending = list()
 state = { 'vocal': False,
           'play': True,
           'skip': True}
@@ -24,7 +25,8 @@ def khome(request, video_id):
 
 def control(request):
     template = loader.get_template("khome/control.html")
-    context = { 'playlist': playlist }
+    context = { 'playlist': playlist,
+                'pending': pending}
     return HttpResponse(template.render(context))
 
 def search(request, query):
@@ -34,8 +36,10 @@ def search(request, query):
     return HttpResponse(template.render(context))
 
 def download(request, video_id, video_title):
+    pending.append(video_title)
     download_youtube(settings.MEDIA_ROOT, video_id)
     remove_vocal(f'{settings.MEDIA_ROOT}/{video_id}.mp3', f'{settings.MEDIA_ROOT}/{video_id}-music.mp3')
+    pending.remove(video_title)
     playlist.append(Result(video_id, video_title))
     return HttpResponse("Success: " + video_id)
 
@@ -49,9 +53,11 @@ def toggle(request, param):
 def check_state(reqeust):
     return JsonResponse(state)
 
-
 def show_playlist(request):
     return JsonResponse({'playlist':list(playlist)})
+
+def show_pending(request):
+    return JsonResponse({'pending':pending})
 
 def pop_playlist(request):
     if len(playlist) > 0:
