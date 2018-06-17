@@ -37,6 +37,11 @@
       $('#music_player').get(0).pause();
   }
 
+  function skip_media() {
+      url = '{% url 'index' %}';
+      window.location.replace(url);
+  }
+
   function check_media_ready() {
       var video = $('#video_player').get(0).readyState == 4;
       var music = $('#music_player').get(0).readyState == 4;
@@ -50,22 +55,36 @@
       }
   }
 
-  function change_vocal(data) {
+  function poll_callback(data) {
        console.log('vocal:' + data.vocal);
        $('#music_player').prop('muted', data.vocal);
        $('#video_player').prop('muted', !data.vocal);
+
+       console.log('skip:' + data.skip);
+       if (data.skip == true) {
+           $.get( "{% url 'toggle' param='skip' %}", function(data) {
+                console.log(data);
+           });
+           skip_media();
+       }
+
+       console.log('play:' + data.play);
+       if (data.play == true) {
+           play_media();
+       } else if (data.play == false) {
+           pause_media();
+       }
   }
 
   var poller = new Poll();
   poller.url = '{% url 'state' %}';
-  poller.func = change_vocal;
+  poller.func = poll_callback;
 
   $(document).ready(function(){
 
     $('#video_player').on('ended',function(){
         console.log('Video has ended!');
-        url = '{% url 'index' %}';
-        window.location.replace(url);
+        skip_media();
     });
 
     $('#video_player').on('canplaythrough',function(){
