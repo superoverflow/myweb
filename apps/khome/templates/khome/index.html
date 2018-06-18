@@ -5,7 +5,9 @@
     {% for item in playlist %}
         <li> {{ item.title }} </li>
     {% empty %}
-        go to {{ control_page }} to add some songs!
+        <h3> Welcome! </h3>
+        <h5> go to {{ control_page }} to add some songs! </h5>
+        <img src="http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&qzone=1&margin=0&size=600x600&ecc=L&data={{ control_page }}" alt="qr code" />
     {% endfor %}
     </ul>
 {% endblock %}
