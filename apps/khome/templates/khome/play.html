@@ -56,7 +56,7 @@
   }
 
   function poll_callback(data) {
-       console.log('vocal:' + data.vocal);
+       //console.log('vocal:' + data.vocal);
        $('#music_player').prop('muted', data.vocal);
        $('#video_player').prop('muted', !data.vocal);
 
@@ -68,7 +68,7 @@
            });
        }
 
-       console.log('play:' + data.play);
+       //console.log('play:' + data.play);
        if (data.play == true) {
            play_media();
        } else if (data.play == false) {

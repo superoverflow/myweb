@@ -2,7 +2,7 @@
 
 function Poll() {
   this.pollTimer = null;
-  this.interval = 500;
+  this.interval = 1000;
   this.url = './request.php';
   this.func = response => console.log(response)
 }
